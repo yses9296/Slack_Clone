@@ -5,3 +5,7 @@ const App = () => {
 };
 
 export default App;
+
+//pages
+//components
+//layouts
