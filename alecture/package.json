@@ -11,6 +11,7 @@
   "author": "Eunseo",
   "license": "ISC",
   "dependencies": {
+    "@emotion/babel-plugin": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@loadable/component": "^5.15.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.9",
