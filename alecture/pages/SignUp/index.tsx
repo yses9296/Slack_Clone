@@ -74,7 +74,7 @@ const SignUp = () => {
                     </p>
                 </Label>
                 <Label id="password-label">
-                    <span>비밀번호</span>
+                    <span>Password</span>
                     <p>
                         <Input type="password" id="password" name="password" value={password} onChange={onChangePassword} />
                     </p>
