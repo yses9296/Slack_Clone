@@ -1,41 +1,40 @@
+import useInput from '@hooks/useInput';
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom'
 import { Header, Form, Label, Input, Button, Error, Success, LinkContainer } from './style'
 
 const SignUp = () => {
-    const [email, setEmail] = useState("");
-    const [nickname, setNickname] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [nickname, setNickname] = useState("");
+    const [email, onChangeEmail, setEmail] = useInput('');
+    const [nickname, onChangeNickname, setNickname] = useInput('');
     const [password, setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
     const [mismatchError, setMismatchError] = useState(false);
     const [signUpError, setSignUpError] = useState('');
     const [signUpSuccess, setSignUpSuccess] = useState(false);
-    
-    // const onChangeEmail = (e) => {setEmail(e.target.value)}
-    // const onChangeNickname = (e) => {setNickname(e.target.value)}
-    // const onChangePassword = useCallback(
-    //     (e) => {
-    //       setPassword(e.target.value);
-    //       setMismatchError(e.target.value !== passwordCheck);
-    //     },
-    //     [passwordCheck],
-    // );
 
-    //임시
-    const onChangeEmail = () => {}
-    const onChangeNickname = () => {}
-    const onChangePassword = () => {}
+
+    const onChangePassword = useCallback(
+        (e: any) => {
+            setPassword(e.target.value)
+            setMismatchError(e.target.value !== passwordCheck)
+        }
+        ,[passwordCheck]
+    )
     const onChangePasswordCheck = useCallback(
-        () => {
-
-        },
-        []
+        (e: any) => {
+            setPasswordCheck(e.target.value)
+            setMismatchError(e.target.value !== password)
+        }
+        ,[password]
     )
     const onSubmitHandler = useCallback(
-        () => {
-
-        },
-        []
+        (e: any) => {
+            e.preventDefault()
+            console.log(email, nickname, password, passwordCheck)
+        }
+        ,[email, nickname, password, passwordCheck, mismatchError]
     );
 
 
