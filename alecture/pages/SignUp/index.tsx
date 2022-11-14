@@ -6,8 +6,8 @@ import { Header, Form, Label, Input, Button, Error, Success, LinkContainer } fro
 const SignUp = () => {
     // const [email, setEmail] = useState("");
     // const [nickname, setNickname] = useState("");
-    const [email, onChangeEmail, setEmail] = useInput('');
-    const [nickname, onChangeNickname, setNickname] = useInput('');
+    const [email, onChangeEmail] = useInput('');
+    const [nickname, onChangeNickname] = useInput('');
     const [password, setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
     const [mismatchError, setMismatchError] = useState(false);
