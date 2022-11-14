@@ -15,7 +15,6 @@ const SignUp = () => {
     const [signUpError, setSignUpError] = useState('');
     const [signUpSuccess, setSignUpSuccess] = useState(false);
 
-
     const onChangePassword = useCallback(
         (e: any) => {
             setPassword(e.target.value)
@@ -37,6 +36,11 @@ const SignUp = () => {
             if(!mismatchError && nickname){
                 console.log('Send UserData to Server');
 
+                //초기화
+                setSignUpError('');
+                setSignUpSuccess(false);
+
+                //서버로 요청
                 axios.post('http://localhost:3095/api/users', {email, nickname, password})
                 .then( (response) => {
                     console.log(response);
