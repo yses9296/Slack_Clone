@@ -1,4 +1,5 @@
 import useInput from '@hooks/useInput';
+import axios from 'axios';
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom'
 import { Header, Form, Label, Input, Button, Error, Success, LinkContainer } from './style'
@@ -31,8 +32,22 @@ const SignUp = () => {
     )
     const onSubmitHandler = useCallback(
         (e: any) => {
-            e.preventDefault()
-            console.log(email, nickname, password, passwordCheck)
+            e.preventDefault();
+
+            if(!mismatchError && nickname){
+                console.log('Send UserData to Server');
+
+                axios.post('http://localhost:3095/api/users', {email, nickname, password})
+                .then( (response) => {
+                    console.log(response);
+                    setSignUpSuccess(true);
+                } )
+                .catch( (err) => {
+                    console.log(err.response);
+                    setSignUpError(err.response.data);
+                } )
+                .finally( () => {})
+            }
         }
         ,[email, nickname, password, passwordCheck, mismatchError]
     );
