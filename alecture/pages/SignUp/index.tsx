@@ -41,7 +41,7 @@ const SignUp = () => {
                 setSignUpSuccess(false);
 
                 //서버로 요청
-                axios.post('http://localhost:3095/api/users', {email, nickname, password})
+                axios.post('/api/users', {email, nickname, password})
                 .then( (response) => {
                     console.log(response);
                     setSignUpSuccess(true);
