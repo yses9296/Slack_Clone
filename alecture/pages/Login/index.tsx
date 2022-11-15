@@ -8,7 +8,7 @@ import { Header, Label, Input, LinkContainer, Button, Success, Form, Error } fro
 
 const LogIn = () => {
 
-  const {data, error, mutate} = useSWR('http://localhost:3095/api/users', fetcher)
+  const {data, error, mutate} = useSWR('http://localhost:3095/api/users', fetcher, {dedupingInterval: 2000}) // 2초동안 데이터 캐시
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
   const [logInError, setlogInError] = useState(false);
@@ -21,7 +21,7 @@ const LogIn = () => {
       axios.post('/api/users/login', { email, password }, {withCredentials: true})
       .then( (response) => {
         console.log(response);
-        mutate();
+        mutate(false, false);
       } )
       .catch( (err) => {
         setlogInError(err.response?.data?.statusCode === 401)
@@ -36,7 +36,7 @@ const LogIn = () => {
   if (data === undefined) {
     return <div>로딩중...</div>;
   }
-  
+
   if (data) {
     return <Navigate to="/workspace/channel" />;
   }

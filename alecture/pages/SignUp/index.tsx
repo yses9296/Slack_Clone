@@ -7,8 +7,7 @@ import useSWR from 'swr';
 import fetcher from '@utils/fetcher'
 
 const SignUp = () => {
-    // const [email, setEmail] = useState("");
-    // const [nickname, setNickname] = useState("");
+
     const [email, onChangeEmail] = useInput('');
     const [nickname, onChangeNickname] = useInput('');
     const [password, setPassword] = useState("");
