@@ -1,14 +1,12 @@
 import useInput from '@hooks/useInput';
 import axios from 'axios';
 import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, Navigate  } from 'react-router-dom';
 import useSWR from 'swr';
 import fetcher from '@utils/fetcher'
 import { Header, Label, Input, LinkContainer, Button, Success, Form, Error } from '../SignUp/style'
 
 const LogIn = () => {
-  const navigate = useNavigate();
 
   const {data, error, mutate} = useSWR('http://localhost:3095/api/users', fetcher)
   const [email, onChangeEmail] = useInput('');
@@ -36,10 +34,8 @@ const LogIn = () => {
   console.log(data)
 
 
-  if (data !== undefined) {
-    console.log("data is not undefined")
-    // return <Navigate to="/workspace/channel" />;
-    navigate('/workspace/channel')
+  if (data) {
+    return <Navigate to="/workspace/channel" />;
   }
 
   return (

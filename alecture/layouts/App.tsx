@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import loadable from '@loadable/component';
 
 const LogIn = loadable( () => import('@pages/Login'));
@@ -8,12 +8,16 @@ const Channel = loadable( () => import('@pages/Channel'));
 
 const App = () => {
   return (
+<div>
+
     <Routes>
       <Route path="/" element={<LogIn/>}></Route>
       <Route path="/login" element={<LogIn/>}></Route>
       <Route path="/signup" element={<SignUp/>}></Route>
       <Route path="/workspace/channel" element={<Channel/>}></Route>
     </Routes>
+ 
+</div>
   )
 };
 

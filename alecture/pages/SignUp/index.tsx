@@ -1,8 +1,10 @@
 import useInput from '@hooks/useInput';
 import axios from 'axios';
 import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom'
-import { Header, Form, Label, Input, Button, Error, Success, LinkContainer } from './style'
+import { Link, Navigate  } from 'react-router-dom';
+import { Header, Form, Label, Input, Button, Error, Success, LinkContainer } from './style';
+import useSWR from 'swr';
+import fetcher from '@utils/fetcher'
 
 const SignUp = () => {
     // const [email, setEmail] = useState("");
@@ -14,6 +16,8 @@ const SignUp = () => {
     const [mismatchError, setMismatchError] = useState(false);
     const [signUpError, setSignUpError] = useState('');
     const [signUpSuccess, setSignUpSuccess] = useState(false);
+
+    const {data, error, mutate} = useSWR('http://localhost:3095/api/users', fetcher)
 
     const onChangePassword = useCallback(
         (e: any) => {
@@ -56,6 +60,9 @@ const SignUp = () => {
         ,[email, nickname, password, passwordCheck, mismatchError]
     );
 
+    if (data) {
+        return <Navigate to="/workspace/channel" />;
+      }
 
     return (
         <div id="container">
