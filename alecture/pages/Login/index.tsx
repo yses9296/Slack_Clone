@@ -1,13 +1,16 @@
 import useInput from '@hooks/useInput';
 import axios from 'axios';
 import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 import fetcher from '@utils/fetcher'
 import { Header, Label, Input, LinkContainer, Button, Success, Form, Error } from '../SignUp/style'
 
 const LogIn = () => {
-  const {data, error} = useSWR('http://localhost:3095/api/users', fetcher)
+  const navigate = useNavigate();
+
+  const {data, error, mutate} = useSWR('http://localhost:3095/api/users', fetcher)
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
   const [logInError, setlogInError] = useState(false);
@@ -20,6 +23,7 @@ const LogIn = () => {
       axios.post('/api/users/login', { email, password }, {withCredentials: true})
       .then( (response) => {
         console.log(response);
+        mutate();
       } )
       .catch( (err) => {
         setlogInError(err.response?.data?.statusCode === 401)
@@ -28,6 +32,15 @@ const LogIn = () => {
 
     }
   , [email, password]);
+
+  console.log(data)
+
+
+  if (data !== undefined) {
+    console.log("data is not undefined")
+    // return <Navigate to="/workspace/channel" />;
+    navigate('/workspace/channel')
+  }
 
   return (
     <div id="container">
