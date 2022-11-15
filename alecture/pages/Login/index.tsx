@@ -33,7 +33,10 @@ const LogIn = () => {
 
   console.log(data)
 
-
+  if (data === undefined) {
+    return <div>로딩중...</div>;
+  }
+  
   if (data) {
     return <Navigate to="/workspace/channel" />;
   }
