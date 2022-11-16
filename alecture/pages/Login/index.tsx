@@ -38,7 +38,7 @@ const LogIn = () => {
   }
 
   if (data) {
-    return <Navigate to="/workspace/channel" />;
+    return <Navigate to="/workspace/" />;
   }
 
   return (
