@@ -1,9 +1,11 @@
-import Workspace from '@layouts/Workspace'
 import React from 'react'
+import { Container, Header } from './style'
 
 const Channel = () => {
     return (
-        <Workspace><div>Login Succeed</div></Workspace>
+        <Container>
+            <Header>Channel</Header>
+        </Container>
     )
 }
 
