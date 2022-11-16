@@ -30,8 +30,7 @@ const Workspace: FC<React.PropsWithChildren<{}>> = ({children}) => {
         .then( (response) => {
             mutate()
         } )
-    }
-    , [])
+    }, [])
 
     const onClickUserProfile = useCallback(() => {
         setShowUserMenu( (prev) => !prev )
