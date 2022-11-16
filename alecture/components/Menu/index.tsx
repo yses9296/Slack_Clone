@@ -5,7 +5,7 @@ interface Props{
     children?: React.ReactNode;
     style: CSSProperties,
     show: boolean,
-    onCloseModal: () => void,
+    onCloseModal: (e: any) => void;
     closeButton?: boolean;
 }
 

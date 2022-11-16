@@ -28,7 +28,8 @@ const Workspace: FC<React.PropsWithChildren<{}>> = ({children}) => {
     const onClickUserProfile = useCallback(() => {
         setShowUserMenu( (prev) => !prev )
     },[])
-    const onCloseUserProfile = useCallback( () => {
+    const onCloseUserProfile = useCallback( (e:any) => {
+        e.stopPropagation();
         setShowUserMenu(false)
     },[])
 
