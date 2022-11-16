@@ -5,6 +5,7 @@ import useSWR from 'swr';
 import fetcher from '@utils/fetcher';
 import loadable from '@loadable/component';
 import gravatar from 'gravatar'
+import { toast } from 'react-toastify';
 import { Header, RightMenu, ProfileImg, WorkspaceWrapper, Workspaces, Channels, Chats, WorkspaceName, MenuScroll, ProfileModal, LogOutButton, WorkspaceButton, AddButton } from './style';
 import Menu from '@components/Menu';
 
@@ -22,8 +23,10 @@ const Workspace: FC<React.PropsWithChildren<{}>> = ({children}) => {
 
     const [showUserMenu, setShowUserMenu] = useState(false)
     const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false)
-    const [newWorkspace, onChangeNewWorkspace] = useInput('');
-    const [newUrl, onChangeNewUrl] = useInput('');
+    const [newWorkspace, onChangeNewWorkspace, setNewWorkspace] = useInput('');
+    const [newUrl, onChangeNewUrl, setNewUrl] = useInput('');
+    // const [newWorkspace, onChangeNewWorkspace] = useInput('');
+    // const [newUrl, onChangeNewUrl] = useInput('');
 
     const onLogout = useCallback( () => {
         axios.post('/api/users/logout', null , {withCredentials: true})
@@ -44,7 +47,24 @@ const Workspace: FC<React.PropsWithChildren<{}>> = ({children}) => {
         setShowCreateWorkspaceModal(true)
     },[])
 
-    const onCreateWorkspace = useCallback( () => {}, [])
+    const onCreateWorkspace = useCallback( (e:any) => {
+        e.preventDefault();
+        if(!newWorkspace || !newWorkspace.trim()) return;
+        if(!newUrl || !newUrl.trim()) return;
+
+        axios.post('/api/workspaces', {workspace: newWorkspace, url: newUrl}, {withCredentials: true})
+        .then( (response) => {
+            mutate();
+            setShowCreateWorkspaceModal(false);
+            setNewWorkspace('');
+            setNewUrl('')
+        })
+        .catch( (err) => {
+            console.dir(error);
+            toast.error(error.response?.data, { position: 'bottom-center' });
+        })
+    }, [newWorkspace, newUrl])
+    
     const onCloseModal = useCallback( (e:any) => {
         e.stopPropagation();
         setShowCreateWorkspaceModal(false)
