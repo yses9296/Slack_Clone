@@ -136,8 +136,8 @@ const Workspace: VFC = () => {
                 </Channels>
                 <Chats>
                     <Routes>
-                        <Route path="/workspace/channel" element={<Channel/>}></Route>
-                        <Route path="/workspace/DirectMessage" element={<DirectMessage/>}></Route>
+                        <Route path="/workspace/:workspace/channel/:channel" element={<Channel/>}></Route>
+                        <Route path="/workspace/:workspace/DirectMessage/:id" element={<DirectMessage/>}></Route>
                     </Routes>
                 </Chats>
             </WorkspaceWrapper>
