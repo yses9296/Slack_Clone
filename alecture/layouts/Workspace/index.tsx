@@ -9,18 +9,21 @@ import { toast } from 'react-toastify';
 import { Header, RightMenu, ProfileImg, WorkspaceWrapper, Workspaces, Channels, Chats, WorkspaceName, MenuScroll, ProfileModal, LogOutButton, WorkspaceButton, AddButton, WorkspaceModal } from './style';
 import Menu from '@components/Menu';
 
-import { IUser } from '@typings/db';
+import { IChannel, IUser } from '@typings/db';
 import { Button, Input, Label } from '@pages/SignUp/style';
 import useInput from '@hooks/useInput';
 import Modal from '@components/Modal';
 import CreateChannelModal from '@components/CreateChannelModal';
+import { useParams } from 'react-router';
 
 
 const Channel = loadable(() => import('@pages/Channel'));
 const DirectMessage = loadable(() => import('@pages/DirectMessage'));
 
 const Workspace: VFC = () => {
+    const { workspace } = useParams<{ workspace: string }>();
     const {data: userData, error, mutate} = useSWR<IUser | false>('http://localhost:3095/api/users', fetcher)
+    const { data: channelData } = useSWR<IChannel[]>(userData ? `/api/workspaces/${workspace}/channels` : null, fetcher);
 
     const [showUserMenu, setShowUserMenu] = useState(false)
     const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
@@ -132,6 +135,8 @@ const Workspace: VFC = () => {
                                 <button onClick={onLogout}>로그아웃</button>
                             </WorkspaceModal>
                         </Menu>
+
+                        {channelData?.map((v) => (<div>{v.name}</div>))}
                     </MenuScroll>
                 </Channels>
                 <Chats>
