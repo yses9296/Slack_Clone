@@ -1,14 +1,7 @@
-import {
-  ChatArea,
-  EachMention,
-  Form,
-  MentionsTextarea,
-  SendButton,
-  Toolbox,
-} from "@components/ChatBox/style";
-import React, { useCallback, useEffect, useRef, VFC } from "react";
-import { Mention, SuggestionDataItem } from "react-mentions";
-import autosize from "autosize";
+import { ChatArea, EachMention, Form, MentionsTextarea, SendButton, Toolbox } from '@components/ChatBox/style';
+import React, { useCallback, useEffect, useRef, VFC } from 'react';
+import { Mention, SuggestionDataItem } from 'react-mentions';
+import autosize from 'autosize';
 
 interface Props {
   chat: string;
@@ -17,12 +10,7 @@ interface Props {
   textareaPlaceholder?: string;
 }
 
-const ChatBox: VFC<Props> = ({
-  chat,
-  onSubmitForm,
-  onChangeChat,
-  textareaPlaceholder,
-}) => {
+const ChatBox: VFC<Props> = ({ chat, onSubmitForm, onChangeChat, textareaPlaceholder }) => {
   const textareaRef = useRef(null);
   useEffect(() => {
     if (textareaRef.current) {
@@ -32,7 +20,7 @@ const ChatBox: VFC<Props> = ({
 
   const onKeydownChat = useCallback(
     (e: any) => {
-      if (e.key === "Enter") {
+      if (e.key === 'Enter') {
         if (!e.shiftKey) {
           onSubmitForm(e);
         }
@@ -57,14 +45,11 @@ const ChatBox: VFC<Props> = ({
         <Toolbox>
           <SendButton
             className={
-              "c-button-unstyled c-icon_button c-icon_button--light c-icon_button--size_medium c-texty_input__button c-texty_input__button--send" +
-              (chat?.trim() ? "" : " c-texty_input__button--disabled")
+              'c-button-unstyled c-icon_button c-icon_button--light c-icon_button--size_medium c-texty_input__button c-texty_input__button--send' +
+              (chat?.trim() ? '' : ' c-texty_input__button--disabled')
             }
           >
-            <i
-              className="c-icon c-icon--paperplane-filled"
-              aria-hidden="true"
-            />
+            <i className="c-icon c-icon--paperplane-filled" aria-hidden="true" />
           </SendButton>
         </Toolbox>
       </Form>

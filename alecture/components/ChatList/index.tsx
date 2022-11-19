@@ -1,5 +1,5 @@
-import React from "react";
-import { ChatZone, Section, StickyHeader } from "@components/ChatList/style";
+import React from 'react';
+import { ChatZone, Section, StickyHeader } from '@components/ChatList/style';
 
 const ChatList = () => {
   return (

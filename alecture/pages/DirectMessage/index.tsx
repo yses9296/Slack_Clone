@@ -1,29 +1,26 @@
-import React, { useCallback } from "react";
-import { useParams } from "react-router";
-import gravatar from "gravatar";
-import { Container, Header } from "@pages/DirectMessage/styles";
-import useSWR from "swr";
-import useSWRInfinite from "swr/infinite";
-import axios from "axios";
-import { IDM } from "@typings/db";
-import fetcher from "@utils/fetcher";
-import ChatBox from "@components/ChatBox";
-import ChatList from "@components/ChatList";
-import useInput from "@hooks/useInput";
+import React, { useCallback } from 'react';
+import { useParams } from 'react-router';
+import gravatar from 'gravatar';
+import { Container, Header } from '@pages/DirectMessage/styles';
+import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite';
+import axios from 'axios';
+import { IDM } from '@typings/db';
+import fetcher from '@utils/fetcher';
+import ChatBox from '@components/ChatBox';
+import ChatList from '@components/ChatList';
+import useInput from '@hooks/useInput';
 
 const DirectMessage = () => {
   const { workspace, id } = useParams<{ workspace: string; id: string }>();
-  const { data: userData } = useSWR(
-    `/api/workspaces/${workspace}/users/${id}`,
-    fetcher,
-  );
-  const { data: myData } = useSWR("/api/users", fetcher);
+  const { data: userData } = useSWR(`/api/workspaces/${workspace}/users/${id}`, fetcher);
+  const { data: myData } = useSWR('/api/users', fetcher);
   const { data: chatData, mutate: mutateChat } = useSWR<IDM[]>(
     `/api/workspaces/${workspace}/dms/${id}/chats?perPage=20&page=1`,
     fetcher,
   );
 
-  const [chat, onChangeChat, setChat] = useInput("");
+  const [chat, onChangeChat, setChat] = useInput('');
   const onSubmitForm = useCallback(
     (e: any) => {
       e.preventDefault();
@@ -35,7 +32,7 @@ const DirectMessage = () => {
           })
           .then(() => {
             mutateChat();
-            setChat("");
+            setChat('');
           })
           .catch(console.error);
       }
@@ -48,19 +45,12 @@ const DirectMessage = () => {
   return (
     <Container>
       <Header>
-        <img
-          src={gravatar.url(userData.email, { s: "24px", d: "retro" })}
-          alt={userData.nickname}
-        />
+        <img src={gravatar.url(userData.email, { s: '24px', d: 'retro' })} alt={userData.nickname} />
         <span>{userData.nickname}</span>
       </Header>
 
       <ChatList />
-      <ChatBox
-        chat={chat}
-        onSubmitForm={onSubmitForm}
-        onChangeChat={onChangeChat}
-      />
+      <ChatBox chat={chat} onSubmitForm={onSubmitForm} onChangeChat={onChangeChat} />
     </Container>
   );
 };
