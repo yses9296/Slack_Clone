@@ -1,21 +1,44 @@
 import { ChatArea, EachMention, Form, MentionsTextarea, SendButton, Toolbox } from '@components/ChatBox/style';
-import React, { useCallback, VFC } from 'react';
+import React, { useCallback, useEffect, useRef, VFC } from 'react';
 import { Mention, SuggestionDataItem } from 'react-mentions';
+import autosize from 'autosize';
 
 interface Props {
-    chat: string
+    chat: string;
+    onSubmitForm: (e: any) => void;
+    onChangeChat: (e: any) => void;
+    textareaPlaceholder?: string
 }
 
-const ChatBox:VFC<Props> = ( {chat} ) => {
-    const onSubmitForm = useCallback( () => {
-
+const ChatBox:VFC<Props> = ( {chat, onSubmitForm, onChangeChat, textareaPlaceholder} ) => {
+    const textareaRef = useRef(null);
+    useEffect( () => {
+        if(textareaRef.current){
+            autosize(textareaRef.current)
+        }
     },[])
+
+    const onKeydownChat = useCallback( (e:any) => {
+        if(e.key === 'Enter'){
+            if (!e.shiftKey) {
+                onSubmitForm(e)
+            }
+        }
+    },[onSubmitForm])
+
     return (
         <ChatArea onSubmit={onSubmitForm}>
             <Form>
-                {/* <MentionsTextarea>
-                    <textarea></textarea>
-                </MentionsTextarea> */}
+                {/* <MentionsTextarea  */}
+                    <textarea 
+                        id="editor-chat" 
+                        value={chat} 
+                        onChange={onChangeChat} 
+                        onKeyDown={onKeydownChat} 
+                        placeholder={textareaPlaceholder}
+                        ref={textareaRef}>
+                    </textarea>
+                {/* </MentionsTextarea> */}
                 <Toolbox>
                     <SendButton 
                         className={

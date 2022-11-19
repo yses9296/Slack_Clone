@@ -25,7 +25,7 @@ const DMList: FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log('DMList: workspace 바꼈다', workspace);
+    console.log('DMList: workspace to', workspace);
     setOnlineList([]);
   }, [workspace]);
 
