@@ -1,37 +1,68 @@
-import React, { useCallback } from 'react'
-import gravatar from 'gravatar';
-import { Container, Header } from '@pages/DirectMessage/styles';
-import useSWR from 'swr';
-import { useParams } from 'react-router';
-import fetcher from '@utils/fetcher';
-import ChatBox from '@components/ChatBox';
-import ChatList from '@components/ChatList';
-import useInput from '@hooks/useInput';
+import React, { useCallback } from "react";
+import { useParams } from "react-router";
+import gravatar from "gravatar";
+import { Container, Header } from "@pages/DirectMessage/styles";
+import useSWR from "swr";
+import useSWRInfinite from "swr/infinite";
+import axios from "axios";
+import { IDM } from "@typings/db";
+import fetcher from "@utils/fetcher";
+import ChatBox from "@components/ChatBox";
+import ChatList from "@components/ChatList";
+import useInput from "@hooks/useInput";
 
 const DirectMessage = () => {
-    const { workspace, id } = useParams<{ workspace: string; id: string }>();
-    const { data: userData } = useSWR(`/api/workspaces/${workspace}/users/${id}`, fetcher);
-    const { data: myData } = useSWR('/api/users', fetcher)
+  const { workspace, id } = useParams<{ workspace: string; id: string }>();
+  const { data: userData } = useSWR(
+    `/api/workspaces/${workspace}/users/${id}`,
+    fetcher,
+  );
+  const { data: myData } = useSWR("/api/users", fetcher);
+  const { data: chatData, mutate: mutateChat } = useSWR<IDM[]>(
+    `/api/workspaces/${workspace}/dms/${id}/chats?perPage=20&page=1`,
+    fetcher,
+  );
 
-    const [chat, onChangeChat, setChat] = useInput('');
-    const onSubmitForm = useCallback( (e:any) => {
-        e.preventDefault();
-        setChat('')
-    },[])
+  const [chat, onChangeChat, setChat] = useInput("");
+  const onSubmitForm = useCallback(
+    (e: any) => {
+      e.preventDefault();
 
-    if(!userData || !myData) return null
-    
-    return (
-        <Container>
-            <Header>
-                <img src={gravatar.url(userData.email, { s: '24px', d: 'retro' })} alt={userData.nickname} />
-                <span>{userData.nickname}</span>
-            </Header>
+      if (chat?.trim()) {
+        axios
+          .post(`/api/workspaces/${workspace}/dms/${id}/chats`, {
+            content: chat,
+          })
+          .then(() => {
+            mutateChat();
+            setChat("");
+          })
+          .catch(console.error);
+      }
+    },
+    [chat],
+  );
 
-            <ChatList/>
-            <ChatBox chat={chat} onSubmitForm={onSubmitForm} onChangeChat={onChangeChat} />
-        </Container>
-    )
-}
+  if (!userData || !myData) return null;
 
-export default DirectMessage
+  return (
+    <Container>
+      <Header>
+        <img
+          src={gravatar.url(userData.email, { s: "24px", d: "retro" })}
+          alt={userData.nickname}
+        />
+        <span>{userData.nickname}</span>
+      </Header>
+
+      <ChatList />
+      <ChatBox
+        chat={chat}
+        onSubmitForm={onSubmitForm}
+        onChangeChat={onChangeChat}
+      />
+    </Container>
+  );
+};
+
+export default DirectMessage;
