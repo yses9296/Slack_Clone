@@ -4,7 +4,6 @@ import { IDM } from '@typings/db';
 import gravatar from 'gravatar';
 import dayjs from 'dayjs';
 import regexifyString from 'regexify-string';
-import { match } from 'assert';
 import { Link, useParams } from 'react-router-dom';
 
 interface Props {
@@ -14,7 +13,6 @@ interface Props {
 const Chat: VFC<Props> = ({ data }) => {
   const { workspace } = useParams<{ workspace: string }>();
   const user = data.Sender;
-  //@[helloworld](1)
 
   const result = useMemo(
     () =>
