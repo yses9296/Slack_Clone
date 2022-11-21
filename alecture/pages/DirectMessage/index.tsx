@@ -3,7 +3,6 @@ import { useParams } from 'react-router';
 import gravatar from 'gravatar';
 import { Container, Header } from '@pages/DirectMessage/styles';
 import useSWR from 'swr';
-import useSWRInfinite from 'swr/infinite';
 import axios from 'axios';
 import { IDM } from '@typings/db';
 import fetcher from '@utils/fetcher';
@@ -37,7 +36,7 @@ const DirectMessage = () => {
           .catch(console.error);
       }
     },
-    [chat],
+    [chat, id, mutateChat, setChat, workspace],
   );
 
   if (!userData || !myData) return null;

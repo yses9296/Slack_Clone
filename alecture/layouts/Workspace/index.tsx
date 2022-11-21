@@ -104,7 +104,7 @@ const Workspace: VFC = () => {
           toast.error(error.response?.data, { position: 'bottom-center' });
         });
     },
-    [newWorkspace, newUrl],
+    [newWorkspace, newUrl, mutate, setNewWorkspace, setNewUrl, error],
   );
 
   const onCloseModal = useCallback((e: any) => {

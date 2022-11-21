@@ -17,7 +17,7 @@ interface Props {
 
 const ChatBox: VFC<Props> = ({ chat, onSubmitForm, onChangeChat, textareaPlaceholder }) => {
   const { workspace } = useParams<{ workspace: string }>();
-  const { data: userData, error, mutate } = useSWR<IUser | false>('/api/users', fetcher, { dedupingInterval: 2000 });
+  const { data: userData } = useSWR<IUser | false>('/api/users', fetcher, { dedupingInterval: 2000 });
   const { data: memberData } = useSWR<IUser[]>(userData ? `/api/workspaces/${workspace}/members` : null, fetcher);
 
   const textareaRef = useRef(null);
