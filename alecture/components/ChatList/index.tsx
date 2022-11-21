@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, VFC, forwardRef } from 'react';
+import React, { useCallback, forwardRef } from 'react';
 import { ChatZone, Section, StickyHeader } from '@components/ChatList/style';
 import { IDM } from '@typings/db';
 import Chat from '@components/Chat';
@@ -34,7 +34,7 @@ const ChatList = forwardRef<Scrollbars, Props>(({ chatSections, setSize, isEmpty
               <StickyHeader>
                 <button>{date}</button>
               </StickyHeader>
-              {chats?.map((chat) => (
+              {chats.map((chat) => (
                 <Chat key={chat.id} data={chat} />
               ))}
             </Section>
