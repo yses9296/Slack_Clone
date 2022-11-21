@@ -9,6 +9,7 @@ import fetcher from '@utils/fetcher';
 import ChatBox from '@components/ChatBox';
 import ChatList from '@components/ChatList';
 import useInput from '@hooks/useInput';
+import makeSections from '@utils/makeSection';
 
 const DirectMessage = () => {
   const { workspace, id } = useParams<{ workspace: string; id: string }>();
@@ -41,6 +42,8 @@ const DirectMessage = () => {
 
   if (!userData || !myData) return null;
 
+  const chatSections = makeSections(chatData ? [...chatData].reverse() : []);
+
   return (
     <Container>
       <Header>
@@ -48,7 +51,7 @@ const DirectMessage = () => {
         <span>{userData.nickname}</span>
       </Header>
 
-      <ChatList chatData={chatData} />
+      <ChatList chatSections={chatSections} />
       <ChatBox chat={chat} onSubmitForm={onSubmitForm} onChangeChat={onChangeChat} />
     </Container>
   );
