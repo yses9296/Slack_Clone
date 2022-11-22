@@ -1,10 +1,9 @@
 import React from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import loadable from '@loadable/component';
 
 const LogIn = loadable(() => import('@pages/Login'));
 const SignUp = loadable(() => import('@pages/SignUp'));
-const Channel = loadable(() => import('@pages/Channel'));
 const Workspace = loadable(() => import('@layouts/Workspace'));
 
 const App = () => {

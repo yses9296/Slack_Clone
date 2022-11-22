@@ -1,8 +1,3 @@
-// import React from 'react';
-// import { render } from 'react-dom';
-// import { BrowserRouter } from 'react-router-dom';
-// import App from '@layouts/App/App'; //tsconfig로 설정했기 때문에 인식 가능
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from '@layouts/App/App'; //tsconfig로 설정했기 때문에 인식 가능
@@ -17,10 +12,4 @@ root.render(
     <App />
   </BrowserRouter>,
 );
-
-// render(
-//   <BrowserRouter>
-//     <App />
-//   </BrowserRouter>,
-//   document.querySelector('#app'),
-// );
+// React 18 ver
