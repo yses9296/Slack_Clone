@@ -79,3 +79,5 @@ export const EachMention = styled.button<{ focus: boolean }>`
     color: white;
   `};
 `;
+
+export const SelectButton = styled.div``;

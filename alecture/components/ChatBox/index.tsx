@@ -1,4 +1,12 @@
-import { ChatArea, EachMention, Form, MentionsTextarea, SendButton, Toolbox } from '@components/ChatBox/style';
+import {
+  ChatArea,
+  EachMention,
+  Form,
+  MentionsTextarea,
+  SelectButton,
+  SendButton,
+  Toolbox,
+} from '@components/ChatBox/style';
 import React, { useCallback, useEffect, useRef, VFC } from 'react';
 import { Mention, SuggestionDataItem } from 'react-mentions';
 import autosize from 'autosize';
@@ -7,15 +15,17 @@ import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
 import useSWR from 'swr';
 import gravatar from 'gravatar';
+import { SelectImage } from '@pages/Channel/style';
 
 interface Props {
   chat: string;
   onSubmitForm: (e: any) => void;
   onChangeChat: (e: any) => void;
+  onChangeFile: (e: any) => void;
   textareaPlaceholder?: string;
 }
 
-const ChatBox: VFC<Props> = ({ chat, onSubmitForm, onChangeChat, textareaPlaceholder }) => {
+const ChatBox: VFC<Props> = ({ chat, onSubmitForm, onChangeChat, textareaPlaceholder, onChangeFile }) => {
   const { workspace } = useParams<{ workspace: string }>();
   const { data: userData } = useSWR<IUser | false>('/api/users', fetcher, { dedupingInterval: 2000 });
   const { data: memberData } = useSWR<IUser[]>(userData ? `/api/workspaces/${workspace}/members` : null, fetcher);
@@ -79,6 +89,7 @@ const ChatBox: VFC<Props> = ({ chat, onSubmitForm, onChangeChat, textareaPlaceho
           />
         </MentionsTextarea>
         <Toolbox>
+          <SelectImage type="file" multiple aria-hidden="true" onChange={onChangeFile} />
           <SendButton
             className={
               'c-button-unstyled c-icon_button c-icon_button--light c-icon_button--size_medium c-texty_input__button c-texty_input__button--send' +

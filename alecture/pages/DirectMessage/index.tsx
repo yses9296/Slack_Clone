@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import gravatar from 'gravatar';
-import { Container, Header } from '@pages/DirectMessage/styles';
+import { Container, DragOver, Header } from '@pages/DirectMessage/styles';
 import useSWR, { useSWRInfinite } from 'swr';
 import axios from 'axios';
 import { IDM } from '@typings/db';
@@ -31,6 +31,8 @@ const DirectMessage = () => {
   const scrollbarRef = useRef<Scrollbars>(null);
 
   const [chat, onChangeChat, setChat] = useInput('');
+  const [dragOver, setDragOver] = useState(false);
+
   const onSubmitForm = useCallback(
     (e: any) => {
       e.preventDefault();
@@ -102,13 +104,61 @@ const DirectMessage = () => {
     }
   }, [chatData]);
 
+  const onChangeFile = useCallback((e: any) => {
+    const formData = new FormData();
+    if (e.target.files) {
+      // Use DataTransferItemList interface to access the file(s)
+      for (let i = 0; i < e.target.files.length; i++) {
+        const file = e.target.files[i].getAsFile();
+        console.log('... file[' + i + '].name = ' + file.name);
+        formData.append('image', file);
+      }
+    }
+    axios.post(`/api/workspaces/${workspace}/dms/${id}/images`, formData).then(() => {});
+  }, []);
+
+  //이미지 드래그 업로드
+  const onDrop = useCallback(
+    (e: any) => {
+      e.preventDefault();
+      const formData = new FormData();
+      if (e.dataTransfer.items) {
+        // Use DataTransferItemList interface to access the file(s)
+        for (let i = 0; i < e.dataTransfer.items.length; i++) {
+          // If dropped items aren't files, reject them
+          if (e.dataTransfer.items[i].kind === 'file') {
+            const file = e.dataTransfer.items[i].getAsFile();
+            console.log('... file[' + i + '].name = ' + file.name);
+            formData.append('image', file);
+          }
+        }
+      } else {
+        // Use DataTransfer interface to access the file(s)
+        for (let i = 0; i < e.dataTransfer.files.length; i++) {
+          console.log('... file[' + i + '].name = ' + e.dataTransfer.files[i].name);
+          formData.append('image', e.dataTransfer.files[i]);
+        }
+      }
+      axios.post(`/api/workspaces/${workspace}/dms/${id}/images`, formData).then(() => {
+        setDragOver(false);
+        mutateChat();
+      });
+    },
+    [id, mutateChat, workspace],
+  );
+  const onDragOver = useCallback((e: any) => {
+    e.preventDefault();
+    console.log(e);
+    setDragOver(true);
+  }, []);
+
   if (!userData || !myData) return null;
 
   // const chatSections = makeSections(chatData ? [...chatData].reverse() : []); //swr 사용 -  1차원 배열 경우
   const chatSections = makeSections(chatData ? chatData.flat().reverse() : []);
 
   return (
-    <Container>
+    <Container onDrop={onDrop} onDragOver={onDragOver}>
       <Header>
         <img src={gravatar.url(userData.email, { s: '24px', d: 'retro' })} alt={userData.nickname} />
         <span>{userData.nickname}</span>
@@ -121,7 +171,9 @@ const DirectMessage = () => {
         isEmpty={isEmpty}
         isReachingEnd={isReachingEnd}
       />
-      <ChatBox chat={chat} onSubmitForm={onSubmitForm} onChangeChat={onChangeChat} />
+      <ChatBox chat={chat} onSubmitForm={onSubmitForm} onChangeChat={onChangeChat} onChangeFile={onChangeFile} />
+
+      {dragOver && <DragOver>Upload the image</DragOver>}
     </Container>
   );
 };
