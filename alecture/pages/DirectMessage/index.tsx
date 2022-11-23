@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
 import gravatar from 'gravatar';
 import { Container, Header } from '@pages/DirectMessage/styles';
-import useSWR, { mutate, useSWRInfinite } from 'swr';
+import useSWR, { useSWRInfinite } from 'swr';
 import axios from 'axios';
 import { IDM } from '@typings/db';
 import fetcher from '@utils/fetcher';
@@ -93,7 +93,7 @@ const DirectMessage = () => {
     return () => {
       socket?.off('dm', onMessage);
     };
-  }, []);
+  }, [onMessage, socket]);
 
   //로딩 시 스크롤바 제일 아래로 설정
   useEffect(() => {

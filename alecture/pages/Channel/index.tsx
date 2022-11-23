@@ -129,7 +129,10 @@ const Channel = () => {
     <Container>
       <Header>
         <span>#{channel}</span>
-        <div className="header-right">
+        <div
+          className="header-right"
+          style={{ display: 'flex', flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}
+        >
           <span>{channelMembersData?.length}</span>
           <button
             onClick={onClickInviteChannel}
